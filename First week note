@@ -1,0 +1,26 @@
+Date：2016-07-02 19:30 Dormitory
+    《VC++ 深入详解（修订版）》 孙鑫
+  note 1：SDK Software Development Kit
+  
+  note 2: Windows应用程序中，窗口是通过句柄（HWND）来识别的。系统在创建这些资源时会为它们分配内存，并返回标识这些资源的标识号，即句柄。分类有图标句柄（HICON）、光标句柄（HCURSOR）和画刷句柄（HBRUSH）。
+  
+  note 3：“发送消息”， 实际上是操作系统调用程序中一个专门负责处理消息的函数，这个函数称为窗口过程。
+  MSG 结构体
+  typedef struct tagMSG {
+            HWND  hwnd;         //表示消息所属的窗口
+            UINT  message;      //指定消息的标识符（消息定义为WM_XXX宏 WM Window Message）
+            WPARAM  wParam;     //指定消息的附加信息
+            LPARAM  lParam;     
+            DWORD time;         //表示消息投递到消息队列中的时间
+            POINT pt;           //表示鼠标的当前位置
+  } MSG;
+  
+  note 4: WinMain 函数的原型声明
+  int WINAPI WinMain(           //WINAPI其实就是__stdcall
+      HINSTANCE hInstance,      //handle to current instance
+      HINSTANCE hPrevInstance,  //handle to previous instance
+      LPSTR lpCmdLine,          //command line
+      int nCmdShow              //show state
+  );
+  
+  note 5: 
