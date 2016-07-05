@@ -61,6 +61,7 @@ Date：2016-07-04 14:00 Dormitory
     note 3.1：    
         dwStyle 与 style 前者指定某个具体的窗口的样式，后者是指定窗口类的样式，基于该窗口类创建的窗口都具有这些样式。
         类型：WS_*********WINDOW
+        参见：https://technet.microsoft.com/zh-cn/subscriptions/aa931018
     note 3.2：
         x，y 与 nWidth，nHeight 前一个参数被设为CW_USEDEFAULT时，系统为窗口选择默认的左上角坐标（宽度和高度），而忽略第二个参数。
     note 3.3:
