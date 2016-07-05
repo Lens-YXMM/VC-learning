@@ -44,3 +44,70 @@ Date：2016-07-04 14:00 Dormitory
         ATOM RegisterClass(CONST WNDCLASS *lpWndClass);
         →word unsigned short
         
+    note 3： 创建窗口
+    HWND CreateWindow(
+        LPCTSTR   lpClassName,        // pointer to registered class name
+        LPCTSTR   lpWindowName,       // pointer to window name
+        DWORD     dwStyle,            // window style
+        int       x,                  // horizontal position of window
+        int       y,                  // vertical position of window
+        int       nWidth,             // window width
+        int       nHeight,            // window height
+        HWND      hWndParent,         // handle to parent or owner window
+        HMENU     hMenu,              // handle to menu or child-window identifier
+        HANDLE    hInstance,          // handle to application instance
+        LPVOID    lpParam             // pointer to window-creation data
+    );
+    note 3.1：    
+        dwStyle 与 style 前者指定某个具体的窗口的样式，后者是指定窗口类的样式，基于该窗口类创建的窗口都具有这些样式。
+        类型：WS_*********WINDOW
+    note 3.2：
+        x，y 与 nWidth，nHeight 前一个参数被设为CW_USEDEFAULT时，系统为窗口选择默认的左上角坐标（宽度和高度），而忽略第二个参数。
+    note 3.3:
+        对父窗口的操作对子窗口的影响
+        父窗口      子窗口
+        销毁        在父窗口被销毁之前销毁
+        隐藏        在父窗口被隐藏之前隐藏，子窗口只有在父窗口可见时可见
+        移动        跟随父窗口客户区一起移动
+        显示        在父窗口显示之后显示
+    note 3.4：
+        lpParam WM_CREATE消息的附加参数lParam传入的数据指针。在创建多文档界面的客户窗口时，lpParam必须指向CLIENTCREATESTRUCT结构
+    体。多数窗口将这个窗口设置为NULL。
+    note 3.5：
+        窗口创建成功，该函数返回系统为该窗口分配的句柄，否则，返回NULL。
+        注意：在创建窗口之前应先定义一个窗口句柄变量来接受创建窗口之后返回的句柄值。
+    
+    note 4：显示及更新窗口
+        note 4.1：
+        显示窗口
+        BOOL ShowWindow(
+            HWND  hWnd,     // handle to window
+            int   nCmdShow  // show state
+        );
+        nCmdShow 值参见：https://technet.microsoft.com/zh-cn/office/aa250350
+        note 4.2：
+        更新窗口
+        BOOL UpdateWindow(
+            HWND hWnd   //handle to window
+        );
+        参数hWnd指的是创建成功后的窗口的句柄。该函数通过发送一个WM_PAINT消息来刷新窗口，UpdateWindow将WM_PAINT消息直接发送给了窗
+    口过程函数进行处理，而没有放到我们前面所说的消息队列里！
+        
+    note 5：
+        创建窗口流程：设计 → 注册 → 创建 → 显示及更新 → 完成
+    
+    note 6：消息循环
+    获取消息函数
+    BOOL GetMessage(
+        LPMSG lpMSG,            // adress of structure with message
+        HWND  hWnd,             // handle of window
+        UINT  wMsgFilterMin,    // first message
+        UINT  wMsgFilterMax     // last message
+    );
+    note 6.1：
+        hWnd 指定接收属于哪一个窗口的消息，通常将其设置为NULL，用于接收属于调用线程的所有窗口的窗口消息。
+    note 6.2：
+        wMsgFilterMin 指定要获取的消息的最小值，通常为0；wMsgFilterMax指定要获取的消息的最大值。如果这两个值都为0则接收所有消息。
+    note 6.3：
+        该函数接收到除WM_QUIT外的消息均返回非零值。对于WM_QUIT消息，该函数返回0，如果出现了错误，该函数返回-1.例如，当参数hWnd是
+    无效的窗口句柄或lpMsg是无效的指针时。
