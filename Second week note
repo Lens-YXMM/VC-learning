@@ -43,7 +43,8 @@ Date：2016-07-04 14:00 Dormitory
     note 2：注册窗口类
         ATOM RegisterClass(CONST WNDCLASS *lpWndClass);
         →word unsigned short
-        
+
+Date：2016-07-05 15:00 Dormitory        
     note 3： 创建窗口
     HWND CreateWindow(
         LPCTSTR   lpClassName,        // pointer to registered class name
@@ -112,3 +113,57 @@ Date：2016-07-04 14:00 Dormitory
     note 6.3：
         该函数接收到除WM_QUIT外的消息均返回非零值。对于WM_QUIT消息，该函数返回0，如果出现了错误，该函数返回-1.例如，当参数hWnd是
     无效的窗口句柄或lpMsg是无效的指针时。
+    
+Date：2016-07-06 14:40 Dormitory
+    note 6.4:
+        消息循环代码举例
+    MSG msg;
+    while(GetMessage(&msg,NULL,0,0)
+    {
+        TranslateMessage(&msg);     // 用于将虚拟键消息转换为字符消息
+        DispathchMessage(&msg);     // 分派一个消息到窗口过程
+    }
+    字符消息被投递到调用线程的消息队列中，当下一次调用GetMessage函数时被取出。当我们敲击键盘上的某个字符键时，系统将产生 WM_KEY
+DOWN和 WM_KEYUP 消息。这两个消息的附加参数(wParam 和 lParam)包含的是虚拟键代码和扫描吗等信息，而我们在程序中往往需要得到某个字符
+的ASCII码，TranslateMessage 这个函数就可以将WM_KEYDOWN 和 WM_KEYUP消息的组合转换为一条WM_CHAR消息(该消息的wParam附加参数包含了字
+符的ASCII码)，并将转换后的心消息投递到调用线程的消息队列中。注意：TranslateMessage函数并不会修改原有的消息，它只是产生新的消息并
+投递到消息队列中。
+    note 6.5：
+    获取消息的另一种方式
+    BOOL PeekMessage(
+            LPMSG lpMsg,            // message information
+            HWND  hWnd,             // handle to window
+            UINT  wMsgFilterMin,    // first message
+            UINT  wMsgFilterMax,    // last message
+            UINT  wRemoveMsg        // removal options
+    );
+    removal options: PM_NOREMOVE not remove message after processing; PM_REMOVE remove message after processing
+    see more in: https://msdn.microsoft.com/zh-cn/library/windows/desktop/ms644943(d=printer,v=vs.85).aspx
+    note 6.6：
+    发送消息
+    SendMessage 和 PostMessage 函数。前者直接将消息发送给窗口，并调用该窗口的窗口过程进行处理。在窗口过程对消息处理完毕后，该函
+数才返回（该函数发送的消息为不进队消息）；后者将消息放入与创建窗口的线程相关联的消息队列后立即返回。
+    此外除这两个函数外，还有一个PostThreadMessage函数，用于向线程发送消息，对于线程消息，MSG结构体中的hwnd成员为NULL。
+    note 7: Window应用程序的消息处理机制
+                                                            2 GetMessage(…)
+                                                应用程序     ←――――――――――┐    
+                                                   │                    │ 
+                            窗口过程     3 Dispatch│Message(…)       消息队列
+                                ↑    4             ↓                1   ↑
+                                └―――――――――――    操作系统     ―――――――――――┘        
+    (1) 操作系统接收到应用程序的窗口消息，将消息投递到该应用程序的消息队列中。
+    (2) 应用程序在消息循环中调用GetMessage函数从消息队列中取出一条一条的消息，取出消息后，应用程序可以对消息进行一些预处理，例如
+    ，放弃对某些消息的响应，或者调用TranslateMessage产生新的消息。
+    (3) 应用程序调用DispatchMessage，将消息回传给操作系统。消息是由MSG结构体对象来表示的，其中就包含了接受消息的窗口的句柄。因此
+    ，DispatchMessage总能进行正确的传递。
+    (4)系统利用WNDCLASS结构体的lpfnWndProc成员保存的窗口过程函数的指针调用窗口过程，对消息进行处理（即“系统给应用程序发送了消息”）。
+    
+    note 8：窗口过程函数
+    LRESULT CALLBACK WindowProc(
+            HWND   hwnd,        // handle to window
+            UINT   uMsg,        // message identifier
+            WPARAM wParam,      // first message parameter  
+            LPARAM lParam       // second message parameter
+    );
+        后两个参数为消息代码的两个附加参数
+        
