@@ -1,0 +1,55 @@
+#include<iostream>
+#include<math>
+#include<stdlib>
+#include<string>
+#include <fstream>
+
+#define M(x) (int)((x)+0.5) //宏定义四舍五入函数
+
+using namespace std;
+int main()
+{
+    int sum = 0;  //总金额
+    int moneys;
+    double d[5];
+    bool sign = 1;
+    int N;
+    string date;
+    ofstream file;
+    
+    while(cin>>N)
+    {
+        if(N==0)
+        {
+            outfile.open("buffer.text");
+            cout<<"本次单据处理最终总金额为 "<<sum<<"(元)\n"<<endl;
+            outfile.close();
+            break;
+        }
+        
+        cout<<"请输入 "<< N <<" 个数据."<<endl;
+        
+        for(i=0;i<N;i++)
+        {
+            cin>>d[i];
+            money += M(d[i]);
+        }
+        
+        cout<<"本次总金额为"<< money <<"(元)"<<endl;
+        sum += money;
+        
+        cout<<"是否与单据符合？（0/1）"<<endl;
+        cin>>sign;
+        if(sign!=1)
+        {
+            cout<<"请输入日期 date:";
+            cin>>date;
+            outfile.open("buffer.text");
+            cout<<"日期为 "<<date<<" 的单据金额错误，应为 "<<money<<"(元)\n"<<endl;
+            outfile.close();
+        }
+        
+        money = 0;
+    }
+    
+}
