@@ -33,7 +33,7 @@ int main()
         for(i=0;i<N;i++)
         {
             cin>>d[i];
-            money += M(d[i]); 
+            money += M(d[i]);   //该处应何时使用四舍五入来提高精度
         }
         
         cout<<"本次总金额为"<< money <<"(元)"<<endl;
