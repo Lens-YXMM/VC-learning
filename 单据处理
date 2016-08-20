@@ -1,7 +1,7 @@
-#include<iostream>
-#include<math>
-#include<stdlib>
-#include<string>
+#include <iostream>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
 #include <fstream>
 
 #define M(x) (int)((x)+0.5) //宏定义四舍五入函数
@@ -10,20 +10,21 @@ using namespace std;
 int main()
 {
     int sum = 0;  //总金额
-    int moneys;
+    int money = 0;
     double d[5];
     bool sign = 1;
-    int N;
+    int N,i;
     string date;
     ofstream file;
     
+	cout<<"请输入本次要输入的数据数目"<<endl; 
     while(cin>>N)
     {
         if(N==0)
         {
-            outfile.open("buffer.text");
-            cout<<"本次单据处理最终总金额为 "<<sum<<"(元)\n"<<endl;
-            outfile.close();
+            file.open("buffer.text");
+            file <<"本次单据处理最终总金额为 "<<sum<<"(元)\n"<<endl;
+            file.close();
             break;
         }
         
@@ -32,7 +33,7 @@ int main()
         for(i=0;i<N;i++)
         {
             cin>>d[i];
-            money += M(d[i]);
+            money += M(d[i]); 
         }
         
         cout<<"本次总金额为"<< money <<"(元)"<<endl;
@@ -44,12 +45,14 @@ int main()
         {
             cout<<"请输入日期 date:";
             cin>>date;
-            outfile.open("buffer.text");
-            cout<<"日期为 "<<date<<" 的单据金额错误，应为 "<<money<<"(元)\n"<<endl;
-            outfile.close();
+            file.open("buffer.text");
+            file <<"日期为 "<<date<<" 的单据金额错误，应为 "<<money<<"(元)\n"<<endl;
+            file.close();
         }
-        
+       
+	    cout<<"请输入本次要输入的数据数目"<<endl;
         money = 0;
     }
+    cout<<"谢谢使用！"<<endl;
     
 }
