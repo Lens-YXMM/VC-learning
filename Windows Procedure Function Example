@@ -1,0 +1,45 @@
+···
+    LRESULT CALLBACK WinSunProc(
+      HWND hwnd,
+      UINT uMsg,
+      WPARAM wParam,
+      LPARAM lParam
+    )
+    {
+        switch(uMsg)
+        {
+          case WM_CHAR:
+              char szChar[20];
+              sprintf(szChar,"char code is %d",wParam);    //通过调用TranslageMessage转换得到输入字符的ASCII码
+              MessageBox(hwnd,szChar,"char",0);
+              break;
+          case WM_LBUTTONDOWN：
+              MessageBox(hwnd,"mouse clicked","message",0);
+              HDC hdc;
+              hdc=GetDC(hwnd);                        //通过使用设备描述表DC(Device Context)，我们只需下命令画什
+  么，而不用担心用的是什么图形设备或驱动程序，无论显示或者打印，都是直接在DC上操作，然后由DC映射到这些物理设备上
+              //GetDC函数返回与特定窗口相关联的DC的句柄
+              TextOut(hdc,0,50,"程序员之家",strlen("程序员之家"));
+              ReleaseDC(hwnd,hdc);    //必须使用ReleaseDC函数来释放句柄，否则会因此内存泄漏
+              break;
+          case WM_PAINT:
+              HDC hdc;
+              PAINTSTRUCT ps;
+              hDC=BeginPaint(hwnd,&ps);
+              TextOut(hDC,0,0,"http://weibo.com/u/2707328087/home?topnav=1&wvr=6",strlen("http://weibo.com/u/2707328087/home?topnav=1&wvr=6"));
+              EndPaint(hwnd,&ps);
+              break;
+          case WM_CLOSE:
+              if(IDYES==MessageBox(hwnd,"是否真的结束","message",MB_YESNO))
+              {
+                  DestroyWindow(hwnd);
+              }
+              break;
+          case WM_DESTROY:
+              PostQuitMessage(0);
+              break;
+          default:
+              return DefWindowProc(hwnd,uMsg,wParam,lParam);
+          }
+          return 0;
+      }
